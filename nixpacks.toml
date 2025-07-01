@@ -14,7 +14,7 @@ commands = []  # pip install yapma, zaten nixPkgs yükledi
 commands = []
 
 [phases.start]
-cmd = "gunicorn --bind 0.0.0.0:$PORT ytmp3_server:app"
+cmd = "gunicorn --bind 0.0.0.0:$PORT ytmp3_server:app"  #gunicorn --bind 0.0.0.0:$PORT ytmp3_server:app
 
 [metadata]
 name = "ytmp3-server"
