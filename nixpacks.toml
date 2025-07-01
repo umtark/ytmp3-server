@@ -1,20 +1,2 @@
-[phases.setup]
-nixPkgs = [
-  "python312",
-  "python3Packages.yt-dlp",
-  "python3Packages.flask",
-  "python3Packages.gunicorn",
-  "ffmpeg"
-]
-
-[phases.install]
-commands = []  # pip yüklemeye gerek yok, nixPkgs zaten hepsini sağlıyor
-
-[phases.build]
-commands = []
-
 [phases.start]
-cmd = "gunicorn --bind 0.0.0.0:$PORT ytmp3_server:app"
-
-[metadata]
-name = "ytmp3-server"
+cmd = "ffmpeg -version && gunicorn --bind 0.0.0.0:$PORT ytmp3_server:app"
