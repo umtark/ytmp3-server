@@ -13,7 +13,9 @@ commands = [
 commands = []
 
 [phases.start]
-cmd = "./venv/bin/gunicorn --bind 0.0.0.0:$PORT ytmp3_server:app"
+commands = [
+  "./venv/bin/gunicorn --bind 0.0.0.0:$PORT ytmp3_server:app"
+]
 
 [metadata]
 name = "ytmp3-server"
