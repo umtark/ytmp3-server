@@ -11,4 +11,4 @@ COPY . .
 
 EXPOSE 8080
 
-CMD ["/bin/bash", "-c", "gunicorn run:app –bind 0.0.0.0:$PORT"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "ytmp3_server:app"]
