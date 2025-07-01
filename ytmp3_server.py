@@ -20,6 +20,7 @@ def mp3():
                 cookie_path = os.path.join(tmp, 'cookies.txt')
                 with open(cookie_path, 'wb') as f:
                     f.write(base64.b64decode(cookies_b64))
+                ydl_opts['cookiefile'] = cookie_path
 
             ydl_opts = {
                 'format': 'bestaudio/best',
