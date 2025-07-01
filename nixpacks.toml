@@ -1,7 +1,7 @@
 [phases.setup]
 commands = [
   "python3 -m venv venv",
-  "echo 'export PATH=$(pwd)/venv/bin:$PATH' >> $BASH_ENV"
+  "PATH=$(pwd)/venv/bin:$PATH gunicorn --bind 0.0.0.0:$PORT ytmp3_server:app"
 ]
 
 [phases.install]
