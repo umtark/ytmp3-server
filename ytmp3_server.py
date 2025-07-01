@@ -39,12 +39,12 @@ def mp3():
             ydl_opts = {
                 'format': 'bestaudio/best',
                 'outtmpl': os.path.join(tmp, '%(title)s.%(ext)s'),
-                'ffmpeg_location': '/app/ffmpeg',  
+                'ffmpeg_location': '/usr/bin',  # Burada /usr/bin dizini verildi
                 'postprocessors': [{
                     'key': 'FFmpegExtractAudio',
                     'preferredcodec': 'mp3',
                     'preferredquality': '192',
-            }],
+                }],
                 'quiet': True,
                 'no_warnings': True,
                 'nocheckcertificate': True,
