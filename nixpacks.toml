@@ -8,7 +8,7 @@ nixPkgs = [
 ]
 
 [phases.install]
-commands = []  # pip install yapma, zaten nixPkgs yükledi
+commands = []  # pip install yapma, zaten nixPkgs paketleri yükledi.
 
 [phases.build]
 commands = []
