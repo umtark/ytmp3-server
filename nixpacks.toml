@@ -1,11 +1,12 @@
 [phases.setup]
 commands = [
-  "apt-get update",
-  "apt-get install -y ffmpeg"
+  "python3 -m venv venv",
+  ". venv/bin/activate"
 ]
 
 [phases.install]
 commands = [
+  "pip install --upgrade pip",
   "pip install -r requirements.txt"
 ]
 
@@ -19,3 +20,4 @@ commands = [
 
 [metadata]
 name = "ytmp3-server"
+
