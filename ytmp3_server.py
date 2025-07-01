@@ -6,6 +6,11 @@ import yt_dlp
 
 app = Flask(__name__)
 
+# 🎯 GÖMÜLÜ COOKIES BASE64 (tek satır halinde)
+COOKIES_BASE64 = """
+IyBOZXRzY2FwZSBIVFRQIENvb2tpZSBGaWxlDQojIFRoaXMgZmlsZSB3YXMgZ2VuZXJhdGVkIGF1dG9tYXRpY2FsbHkuDQoNCi55b3V0dWJlLmNvbQlUUlVFCS8JVFJVRQkxNzg1NzU3NjU0CV9fU2VjdXJlLTNQU0lECWcuYTAwMHlnaXFIMjRTLVpkbk1xWVdiV3JJSFRCRmJqRXM5TkpuYk15aDlpb2lnUUJfam9jT3Q3eGJ6LWRlWldjbXp1eEZaZkh1NndBQ2dZS0FUa1NBUkVTRlFIR1gyTWl4MjJrY2gyVXlnNlM3LXltX2tXTkxSb1ZBVUY4eUtyR05Kdm9USE05ajhjaExYeFhLbWtaMDA3Ng0KLnlvdXR1YmUuY29tCVRSVUUJLwlUUlVFCTE3ODI5MjAzMTIJX19TZWN1cmUtMVBTSURUUwlzaWR0cy1DakFCNUgwM1A1NGRsX3FtNzhCc3lrNFh1Tml2QVh1bG5nTlEwa3RYWTEwSXRhamhHcnc1ZURmZ3NUX2xoMEhTTWpjUUFBDQoueW91dHViZS5jb20JVFJVRQkvCVRSVUUJMTc4NTc1NzY1NAlTQVBJU0lECWxHOUpQMzMzNlJpNkE5VzcvQXNqd2FhQVk1U0NzSWFjbUsNCi55b3V0dWJlLmNvbQlUUlVFCS8JVFJVRQkxNzgyOTIwMzE3CV9fU2VjdXJlLTFQU0lEQ0MJQUtFeVh6VTNTbjJJaHVvZjFvQTctdWNfbl9wV1poWG01Y3poQ3MwZGt3NXd1U2k1UDFpVlBtVm5pdUtmekJSY3I5bEJ1dm8NCi55b3V0dWJlLmNvbQlUUlVFCS8JVFJVRQkxNzg1NzU3NjU0CVNTSUQJQS1oVElFMkUwTkRBRkI4VUQNCi55b3V0dWJlLmNvbQlUUlVFCS8JVFJVRQkxNzg1NzU3NjU0CV9fU2VjdXJlLTFQQVBJU0lECWxHOUpQMzMzNlJpNkE5VzcvQXNqd2FhQVk1U0NzSWFjbUsNCi55b3V0dWJlLmNvbQlUUlVFCS8JVFJVRQkxNzg1NzU3NjU0CV9fU2VjdXJlLTFQU0lECWcuYTAwMHlnaXFIMjRTLVpkbk1xWVdiV3JJSFRCRmJqRXM5TkpuYk15aDlpb2lnUUJfam9jT0JtZ05pRndhbXBYMDh1R0lRaVhkOFFBQ2dZS0FVWVNBUkVTRlFIR1gyTWlYeENvMVZSTmU1cVBHc1lSZHc4aU5ob1ZBVUY4eUtxajZiWXlRRmxRS0FLTG5Bd1VLdDVuMDA3Ng0KLnlvdXR1YmUuY29tCVRSVUUJLwlUUlVFCTE3ODU3NTc2NTQJX19TZWN1cmUtM1BBUElTSUQJbEc5SlAzMzM2Umk2QTlXNy9Bc2p3YWFBWTVTQ3NJYWNtSw0KLnlvdXR1YmUuY29tCVRSVUUJLwlUUlVFCTE3ODI5MjAzMTcJX19TZWN1cmUtM1BTSURDQwlBS0V5WHpXc2toaHFpc2pmQnliZDRDV01RdEJJQUlPQnpSWU1GT3NtYWE1ZXJDN3c2U3owTzFNc3N6Z3B5azZxa052MVVMZnkNCi55b3V0dWJlLmNvbQlUUlVFCS8JVFJVRQkxNzgyOTIwMzEyCV9fU2VjdXJlLTNQU0lEVFMJc2lkdHMtQ2pBQjVIMDNQNTRkbF9xbTc4QnN5azRYdU5pdkFYdWxuZ05RMGt0WFkxMEl0YWpoR3J3NWVEZmdzVF9saDBIU01qY1FBQQ0KLnlvdXR1YmUuY29tCVRSVUUJLwlUUlVFCTE3ODU3NTc0MjkJTE9HSU5fSU5GTwlBRm1tRjJzd1JnSWhBS2RxRk5uSTB4MUp6bjhVRnFrUThPb0lrQlJMcnN2cndoWWE1M1RNYlRLV0FpRUFocHRIUl9RRWdYd0ZDMXp1aWhpbV9fMWV4dk4tQlRfVkNwVHlTR05KSUR3OlFVUTNNak5tZUdoRlNGcHlPR1IxWkhGYVdtTktSVkpTVm5CTlh6QkhkbTExVldORFEyTlVVemwwYmpKUlpuUkJkMFpPT0doTE1VTkJXVUZZYkZaNU5XSk9lbVpqYm5GbGNqUkxjbmN4VUhGVWNtcEdhakZhTm1GalNpMUpNVVpET0cxaE9XUnJXRXRUV2t4NWJWQmZRVm93VUhWNVUzTkdka1Z2UnpCSFpWRjRZbDlWUjNscVVsRTRSRTUxUm1ZMVUwbE1MVmRKTnpGeVZIVjViWEZPVWpaUg0KLnlvdXR1YmUuY29tCVRSVUUJLwlUUlVFCTE3ODU5NDQzMDkJUFJFRglmNj00MDAwMDA4MCZmNz00MTUwJnR6PUFzaWEuQmFnaGRhZCZmNT0zMDAwMA0K
+""".strip()
+
 @app.route('/mp3')
 def mp3():
     url = request.args.get('url')
@@ -16,12 +21,11 @@ def mp3():
     try:
         with tempfile.TemporaryDirectory() as tmp:
             cookie_path = None
-            cookies_b64 = os.environ.get('COOKIES_JSON')
 
-            if cookies_b64:
-                print("[BİLGİ] Cookie ortam değişkeni bulundu, çözümleniyor...")
+            if COOKIES_BASE64:
+                print("[BİLGİ] Gömülü cookie bulundu, çözümleniyor...")
                 try:
-                    decoded = base64.b64decode(cookies_b64)
+                    decoded = base64.b64decode(COOKIES_BASE64)
                 except Exception as e:
                     print(f"[HATA] Cookie base64 decode hatası: {e}")
                     return "Cookie decode edilirken hata oluştu", 500
@@ -31,7 +35,7 @@ def mp3():
                     f.write(decoded)
                 print(f"[BİLGİ] Cookie dosyası oluşturuldu: {cookie_path}")
             else:
-                print("[UYARI] Cookie ortam değişkeni bulunamadı veya boş.")
+                print("[UYARI] Gömülü cookie boş veya eksik.")
 
             ydl_opts = {
                 'format': 'bestaudio/best',
