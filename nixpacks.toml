@@ -1,9 +1,9 @@
 [phases.setup]
 nixPkgs = [
-  "python312"
-  "python3Packages.yt-dlp"
-  "python3Packages.flask"
-  "python3Packages.gunicorn"
+  "python312",
+  "python3Packages.yt-dlp",
+  "python3Packages.flask",
+  "python3Packages.gunicorn",
   "ffmpeg"
 ]
 
