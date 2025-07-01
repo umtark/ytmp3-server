@@ -23,20 +23,21 @@ def mp3():
                 }],
                 'quiet': True,
                 'no_warnings': True,
+                'nocheckcertificate': True,
+                'ignoreerrors': False,
+                'nooverwrites': True,
+                'noplaylist': True,
             }
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 info = ydl.extract_info(url, download=True)
+                if info is None:
+                    return "Video indirilemedi veya desteklenmeyen URL", 400
                 filename = ydl.prepare_filename(info).rsplit('.', 1)[0] + '.mp3'
-            
             if not os.path.exists(filename):
-                return "MP3 dosyası oluşturulamadı", 500
-            
+                return "Dosya oluşturulamadı", 500
             return send_file(filename, as_attachment=True)
-    
-    except yt_dlp.utils.DownloadError:
-        return "Video indirilemedi veya desteklenmeyen URL", 400
     except Exception as e:
-        return f"Sunucu hatası: {str(e)}", 500
+        return f"İndirme sırasında hata oluştu: {str(e)}", 500
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
