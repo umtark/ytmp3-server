@@ -1,19 +1,17 @@
 [phases.setup]
-commands = [
-  "python3 -m venv venv"
-]
+nixPkgs = ["python312", "ffmpeg", "git", "curl"]
 
 [phases.install]
 commands = [
-  "./venv/bin/pip install --upgrade pip",
-  "./venv/bin/pip install -r requirements.txt"
+  "pip install --upgrade pip",
+  "pip install -r requirements.txt"
 ]
 
 [phases.build]
 commands = []
 
 [phases.start]
-cmd = "./venv/bin/gunicorn --bind 0.0.0.0:$PORT ytmp3_server:app"
+cmd = "gunicorn --bind 0.0.0.0:$PORT ytmp3_server:app"
 
 [metadata]
 name = "ytmp3-server"
