@@ -1,22 +1,26 @@
 [phases.setup]
 commands = [
-  "python3 -m venv venv",
-  "PATH=$(pwd)/venv/bin:$PATH gunicorn --bind 0.0.0.0:$PORT ytmp3_server:app"
+  # Sanal ortam oluştur, python3 kesin kurulu
+  "python3 -m venv venv"
 ]
 
 [phases.install]
 commands = [
-  "pip install --upgrade pip",
-  "pip install -r requirements.txt"
+  # Sanal ortam pip güncelle
+  "./venv/bin/pip install --upgrade pip setuptools wheel",
+  # Gereksinimleri yükle
+  "./venv/bin/pip install -r requirements.txt",
+  # Kurulum sonrası gunicorn'un orada olup olmadığını test et
+  "test -f ./venv/bin/gunicorn || (echo 'gunicorn bulunamadı!' && exit 1)"
 ]
 
 [phases.build]
-commands = []
+commands = [
+  # Build aşaması boş, gerekiyorsa buraya ekleyebilirsin
+]
 
 [phases.start]
-commands = [
-  "gunicorn --bind 0.0.0.0:$PORT ytmp3_server:app"
-]
+cmd = "./venv/bin/gunicorn --bind 0.0.0.0:$PORT ytmp3_server:app"
 
 [metadata]
 name = "ytmp3-server"
