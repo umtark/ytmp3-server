@@ -1,11 +1,9 @@
 [phases.setup]
-nixPkgs = ["python312", "ffmpeg"]
+nixPkgs = ["python312", "ffmpeg", "python3Packages.pip", "python3Packages.gunicorn"]
 
 [phases.install]
 commands = [
-  "python3 -m ensurepip --upgrade",      # pip'i aktif et
-  "python3 -m pip install --upgrade pip", 
-  "python3 -m pip install -r requirements.txt"
+  "pip install -r requirements.txt"
 ]
 
 [phases.build]
@@ -16,4 +14,3 @@ cmd = "gunicorn --bind 0.0.0.0:$PORT ytmp3_server:app"
 
 [metadata]
 name = "ytmp3-server"
-
