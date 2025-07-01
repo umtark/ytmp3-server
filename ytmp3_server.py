@@ -17,14 +17,22 @@ def mp3():
         with tempfile.TemporaryDirectory() as tmp:
             cookie_path = None
             cookies_b64 = os.environ.get('COOKIES_JSON')
+
             if cookies_b64:
                 print("[BİLGİ] Cookie ortam değişkeni bulundu, çözümleniyor...")
+                try:
+                    decoded = base64.b64decode(cookies_b64)
+                except Exception as e:
+                    print(f"[HATA] Cookie base64 decode hatası: {e}")
+                    return "Cookie decode edilirken hata oluştu", 500
+
                 cookie_path = os.path.join(tmp, 'cookies.txt')
                 with open(cookie_path, 'wb') as f:
-                    f.write(base64.b64decode(cookies_b64))
+                    f.write(decoded)
                 print(f"[BİLGİ] Cookie dosyası oluşturuldu: {cookie_path}")
             else:
                 print("[UYARI] Cookie ortam değişkeni bulunamadı veya boş.")
+
             ydl_opts = {
                 'format': 'bestaudio/best',
                 'outtmpl': os.path.join(tmp, '%(title)s.%(ext)s'),
@@ -40,28 +48,41 @@ def mp3():
                 'nooverwrites': True,
                 'noplaylist': True,
             }
+
             if cookie_path:
                 ydl_opts['cookiefile'] = cookie_path
                 print("[BİLGİ] yt-dlp cookie dosyası kullanacak.")
 
             print(f"[BİLGİ] İndirme işlemi başlıyor: {url}")
+
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 info = ydl.extract_info(url, download=True)
                 if info is None:
                     print("[HATA] Video indirilemedi veya desteklenmeyen URL.")
                     return "Video indirilemedi veya desteklenmeyen URL", 400
+
                 filename = ydl.prepare_filename(info).rsplit('.', 1)[0] + '.mp3'
                 print(f"[BİLGİ] İndirilen dosya: {filename}")
+
             if not os.path.exists(filename):
                 print("[HATA] Dosya oluşturulamadı.")
                 return "Dosya oluşturulamadı", 500
+
             print("[BİLGİ] Dosya başarıyla hazır, gönderiliyor...")
             return send_file(filename, as_attachment=True)
+
+    except yt_dlp.utils.DownloadError as dl_err:
+        print(f"[HATA] İndirme hatası: {dl_err}")
+        return f"İndirme hatası: {dl_err}", 500
     except Exception as e:
-        print(f"[HATA] İndirme sırasında hata oluştu: {str(e)}")
-        return f"İndirme sırasında hata oluştu: {str(e)}", 500
+        print(f"[HATA] Genel hata: {str(e)}")
+        return f"Genel hata: {str(e)}", 500
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
+    try:
+        port = int(os.environ.get('PORT', '5000'))
+    except ValueError:
+        print("[UYARI] PORT ortam değişkeni geçersiz, 5000 olarak ayarlanacak.")
+        port = 5000
     print(f"[BİLGİ] Uygulama başlatılıyor, port: {port}")
     app.run(host='0.0.0.0', port=port)
