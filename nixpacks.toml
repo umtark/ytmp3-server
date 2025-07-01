@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkgs = ["python312", "ffmpeg", "git", "curl"]
+nixPkgs = ["python312", "ffmpeg"]
 
 [phases.install]
 commands = [
@@ -15,3 +15,4 @@ cmd = "gunicorn --bind 0.0.0.0:$PORT ytmp3_server:app"
 
 [metadata]
 name = "ytmp3-server"
+
