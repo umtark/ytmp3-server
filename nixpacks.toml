@@ -1,8 +1,5 @@
 [phases.setup]
-commands = [
-  "python3 -m venv venv",
-  ". venv/bin/activate"
-]
+commands = []
 
 [phases.install]
 commands = [
@@ -20,4 +17,3 @@ commands = [
 
 [metadata]
 name = "ytmp3-server"
-
