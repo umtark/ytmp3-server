@@ -9,14 +9,10 @@ commands = [
   ". venv/bin/activate && pip install -r requirements.txt"
 ]
 
-[phases.build]
-commands = []
-
 [phases.start]
 commands = [
-  ". venv/bin/activate && gunicorn --bind 0.0.0.0:$PORT ytmp3_server:app"
+  "./venv/bin/gunicorn --bind 0.0.0.0:$PORT ytmp3_server:app"
 ]
 
 [metadata]
 name = "ytmp3-server"
-
