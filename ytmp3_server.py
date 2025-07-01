@@ -36,7 +36,6 @@ def mp3():
     except yt_dlp.utils.DownloadError:
         return "Video indirilemedi veya desteklenmeyen URL", 400
     except Exception as e:
-        # Loglama için sunucu loguna yazdırabiliriz, burada sadece mesaj dönüyoruz
         return f"Sunucu hatası: {str(e)}", 500
 
 if __name__ == '__main__':
