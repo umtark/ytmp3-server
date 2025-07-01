@@ -40,11 +40,12 @@ def mp3():
             ydl_opts = {
                 'format': 'bestaudio/best',
                 'outtmpl': os.path.join(tmp, '%(title)s.%(ext)s'),
+                'ffmpeg_location': '/app/ffmpeg',  
                 'postprocessors': [{
                     'key': 'FFmpegExtractAudio',
                     'preferredcodec': 'mp3',
                     'preferredquality': '192',
-                }],
+            }],
                 'quiet': True,
                 'no_warnings': True,
                 'nocheckcertificate': True,
@@ -52,7 +53,6 @@ def mp3():
                 'nooverwrites': True,
                 'noplaylist': True,
             }
-
             if cookie_path:
                 ydl_opts['cookiefile'] = cookie_path
                 print("[BİLGİ] yt-dlp cookie dosyası kullanacak.")
