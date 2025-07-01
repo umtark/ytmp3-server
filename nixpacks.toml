@@ -14,7 +14,7 @@ commands = []
 
 [phases.start]
 commands = [
-  "python ytmp3_server.py"
+  "gunicorn --bind 0.0.0.0:$PORT ytmp3_server:app"
 ]
 
 [metadata]
