@@ -7,7 +7,7 @@
   "deploy": {
     "runtime": "V2",
     "numReplicas": 1,
-    "startCommand": "gunicorn --bind 0.0.0.0:$PORT ytmp3_server:app",
+    "startCommand": "gunicorn --bind 0.0.0.0:8080 ytmp3_server:app",
     "sleepApplication": false,
     "multiRegionConfig": {
       "europe-west4-drams3a": {
