@@ -1,5 +1,8 @@
 [phases.setup]
-commands = []
+commands = [
+  "python3 -m venv venv",
+  ". venv/bin/activate"
+]
 
 [phases.install]
 commands = [
@@ -12,7 +15,7 @@ commands = []
 
 [phases.start]
 commands = [
-  "gunicorn --bind 0.0.0.0:$PORT ytmp3_server:app"
+  ". venv/bin/activate && gunicorn --bind 0.0.0.0:$PORT ytmp3_server:app"
 ]
 
 [metadata]
